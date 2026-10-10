@@ -1,0 +1,25 @@
+# Node dependencies and build
+node_modules/
+dist/
+dist-ssr/
+
+# Python cache and environments
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.env.local
+.venv/
+venv/
+env/
+
+# ML experiment tracking & Jupyter
+.ipynb_checkpoints/
+mlruns/
+
+# Logs & temp
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

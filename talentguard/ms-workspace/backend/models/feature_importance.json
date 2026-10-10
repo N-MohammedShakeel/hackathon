@@ -1,77 +1,77 @@
 [
   {
     "feature": "MonthlyIncome",
-    "importance": 0.0799,
+    "importance": 0.0788,
     "label": "Monthlyincome"
   },
   {
     "feature": "Age",
-    "importance": 0.0645,
+    "importance": 0.0651,
     "label": "Age"
   },
   {
-    "feature": "OverTime_Yes",
-    "importance": 0.055,
-    "label": "Overtime Yes"
+    "feature": "YearsAtCompany",
+    "importance": 0.0561,
+    "label": "Yearsatcompany"
   },
   {
     "feature": "DailyRate",
-    "importance": 0.0524,
+    "importance": 0.0533,
     "label": "Dailyrate"
   },
   {
     "feature": "TotalWorkingYears",
-    "importance": 0.052,
+    "importance": 0.0523,
     "label": "Totalworkingyears"
   },
   {
-    "feature": "YearsAtCompany",
-    "importance": 0.0513,
-    "label": "Yearsatcompany"
+    "feature": "OverTime_Yes",
+    "importance": 0.052,
+    "label": "Overtime Yes"
   },
   {
     "feature": "YearsWithCurrManager",
-    "importance": 0.0476,
+    "importance": 0.0449,
     "label": "Yearswithcurrmanager"
   },
   {
-    "feature": "HourlyRate",
-    "importance": 0.0413,
-    "label": "Hourlyrate"
-  },
-  {
-    "feature": "MonthlyRate",
-    "importance": 0.041,
-    "label": "Monthlyrate"
-  },
-  {
     "feature": "DistanceFromHome",
-    "importance": 0.0391,
+    "importance": 0.043,
     "label": "Distancefromhome"
   },
   {
+    "feature": "MonthlyRate",
+    "importance": 0.0417,
+    "label": "Monthlyrate"
+  },
+  {
+    "feature": "HourlyRate",
+    "importance": 0.041,
+    "label": "Hourlyrate"
+  },
+  {
     "feature": "StockOptionLevel",
-    "importance": 0.0372,
+    "importance": 0.0365,
     "label": "Stockoptionlevel"
   },
   {
     "feature": "NumCompaniesWorked",
-    "importance": 0.0344,
+    "importance": 0.0347,
     "label": "Numcompaniesworked"
   },
   {
     "feature": "PercentSalaryHike",
-    "importance": 0.0298,
+    "importance": 0.0321,
     "label": "Percentsalaryhike"
   },
   {
-    "feature": "JobLevel",
-    "importance": 0.0293,
-    "label": "Joblevel"
+    "feature": "YearsInCurrentRole",
+    "importance": 0.0312,
+    "label": "Yearsincurrentrole"
   },
   {
-    "feature": "EnvironmentSatisfaction",
-    "importance": 0.0288,
-    "label": "Environmentsatisfaction"
+    "feature": "JobSatisfaction",
+    "importance": 0.0269,
+    "label": "Jobsatisfaction"
   }
 ]

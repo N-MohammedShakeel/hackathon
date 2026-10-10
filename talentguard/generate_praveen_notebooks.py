@@ -22,7 +22,8 @@ def create_notebook(cells, filepath):
     with open(filepath, "w", encoding="utf-8") as f:
         json.dump(nb, f, indent=2)
 
-nb_dir = r"c:\Users\2000209960\Downloads\hackathon\talentguard\praveen-workspace\ml\notebooks"
+base_dir = os.path.dirname(os.path.abspath(__file__))
+nb_dir = os.path.join(base_dir, "praveen-workspace", "ml", "notebooks")
 
 # --- Notebook 1: EDA ---
 cells_eda = [

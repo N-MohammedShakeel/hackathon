@@ -32,12 +32,30 @@ SCALER_PATH = os.path.join("models", "scaler.pkl")
 DROP_COLUMNS = ["EmployeeCount", "Over18", "StandardHours", "EmployeeNumber"]
 
 
-def load_artifacts(model_path: str = MODEL_PATH, scaler_path: str = SCALER_PATH):
+def _find_file(filename):
+    search_dirs = [
+        os.path.join(os.path.dirname(__file__), "..", "..", "artifacts"),
+        os.path.join(os.path.dirname(__file__), "..", "artifacts"),
+        os.path.join(os.path.dirname(__file__), "..", "..", "ms-workspace", "backend", "models"),
+        os.path.join(os.getcwd(), "models"),
+        os.path.join(os.getcwd(), "artifacts"),
+        os.getcwd()
+    ]
+    for d in search_dirs:
+        p = os.path.join(d, filename)
+        if os.path.exists(p):
+            return p
+    return filename
+
+
+def load_artifacts(model_path: str = None, scaler_path: str = None):
     """Load the trained model and scaler, and recover the exact
     feature column order the model was trained on."""
+    m_path = model_path if (model_path and os.path.exists(model_path)) else _find_file("best_model.pkl")
+    s_path = scaler_path if (scaler_path and os.path.exists(scaler_path)) else _find_file("scaler.pkl")
 
-    model = joblib.load(model_path)
-    scaler = joblib.load(scaler_path)
+    model = joblib.load(m_path)
+    scaler = joblib.load(s_path)
 
     feature_columns = list(model.feature_names_in_)
 

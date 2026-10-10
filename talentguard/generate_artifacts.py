@@ -10,8 +10,13 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score, f1_score, precision_score, recall_score
 
+base_dir = os.path.dirname(os.path.abspath(__file__))
+dataset_path = os.path.join(base_dir, "praveen-workspace", "ml", "data", "WA_Fn-UseC_-HR-Employee-Attrition.csv")
+if not os.path.exists(dataset_path):
+    dataset_path = os.path.join(base_dir, "..", "dataset", "WA_Fn-UseC_-HR-Employee-Attrition.csv")
+
 print("Loading dataset...")
-df = pd.read_csv(r"c:\Users\2000209960\Downloads\hackathon\dataset\WA_Fn-UseC_-HR-Employee-Attrition.csv")
+df = pd.read_csv(dataset_path)
 raw_df = df.copy()  # keep for employee details
 
 df.drop(columns=["EmployeeNumber", "EmployeeCount", "Over18", "StandardHours"], inplace=True)
@@ -60,7 +65,7 @@ feat_imp = [
 ]
 
 # Save to backend/models
-models_dir = r"c:\Users\2000209960\Downloads\hackathon\talentguard\ms-workspace\backend\models"
+models_dir = os.path.join(base_dir, "ms-workspace", "backend", "models")
 os.makedirs(models_dir, exist_ok=True)
 
 joblib.dump(rf, os.path.join(models_dir, "best_model.pkl"))
@@ -176,7 +181,7 @@ with open(os.path.join(models_dir, "top50_watchlist.json"), "w") as f:
     json.dump(watchlist, f, indent=2)
 
 # Copy to praveen artifacts too
-prav_dir = r"c:\Users\2000209960\Downloads\hackathon\talentguard\praveen-workspace\artifacts"
+prav_dir = os.path.join(base_dir, "praveen-workspace", "artifacts")
 os.makedirs(prav_dir, exist_ok=True)
 for fn in ["best_model.pkl", "scaler.pkl", "feature_columns.json", "model_metrics.json",
            "feature_importance.json", "top50_watchlist.json"]:
