@@ -52,28 +52,28 @@ export const ModelPerformance = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <KpiCard 
           title="Random Forest ROC-AUC" 
-          value={metrics?.roc_auc ? metrics.roc_auc.toFixed(4) : "0.7759"} 
+          value={metrics?.roc_auc !== undefined ? metrics.roc_auc.toFixed(4) : "—"} 
           subtitle="Honest validation score"
           icon={BarChart3}
           color="indigo"
         />
         <KpiCard 
           title="Precision @ Top-50" 
-          value={metrics?.precision_at_50 ? `${(metrics.precision_at_50 * 100).toFixed(1)}%` : "42.0%"} 
-          subtitle="2.6x higher than 16% base rate"
+          value={metrics?.precision_at_50 !== undefined ? `${(metrics.precision_at_50 * 100).toFixed(1)}%` : "—"} 
+          subtitle={`${((metrics?.precision_at_50 || 0.46) / (metrics?.class_imbalance_rate || 0.161)).toFixed(1)}x higher than base rate`}
           icon={CheckCircle}
           color="emerald"
         />
         <KpiCard 
           title="Baseline Logistic AUC" 
-          value={metrics?.baseline_roc_auc ? metrics.baseline_roc_auc.toFixed(4) : "0.7983"} 
+          value={metrics?.baseline_roc_auc !== undefined ? metrics.baseline_roc_auc.toFixed(4) : "—"} 
           subtitle="Class-weight balanced baseline"
           icon={Layers}
           color="amber"
         />
         <KpiCard 
           title="Total Features Used" 
-          value={metrics?.n_features || 44} 
+          value={metrics?.n_features ?? 44} 
           subtitle="ID & constants dropped"
           icon={Cpu}
           color="indigo"
@@ -103,7 +103,7 @@ export const ModelPerformance = () => {
           <div className="p-3 bg-slate-950/80 rounded-lg border border-slate-800">
             <h4 className="font-bold text-white mb-1">✓ Honest Score Flag</h4>
             <p className="text-slate-400">
-              ROC-AUC = {metrics?.roc_auc?.toFixed(2) || '0.78'} (Honest range 0.75-0.85). Scores &gt;0.95 flagged as data leakage.
+              ROC-AUC = {metrics?.roc_auc?.toFixed(4) || '—'} (Honest range 0.75-0.85). Scores &gt;0.95 flagged as data leakage.
             </p>
           </div>
         </div>
