@@ -1,0 +1,32 @@
+server:
+  port: 8082
+spring:
+  config:
+    activate:
+      on-profile: local
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    # Points at the pgvector/pgvector Postgres container from docker-compose.infra.yml
+    # (host port 5433 -> container 5432), so every local service shares one database.
+    url: jdbc:postgresql://localhost:5433/hexamed_db
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+minio:
+  endpoint: http://localhost:9000
+  access-key: admin
+  secret-key: password123
+  bucket-name: clinical-documents
+
+document-service:
+  public-url: http://localhost:8082
+
+ai-service:
+  url: http://localhost:8083

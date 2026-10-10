@@ -1,0 +1,425 @@
+import React, { useState, useMemo, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { selectAllPatients, fetchPatients, selectPatientStatus, archivePatient, updatePatient } from "../../../store/slices/patientSlice";
+import { useAllEncounters } from "../../../common/hooks/useEncounters";
+import Card from "../../../components/ui/Card";
+import Button from "../../../components/ui/Button";
+import StatusBadge from "../../../components/ui/Badge";
+import { Plus, Search, Download, Pencil, Activity, Archive } from "lucide-react";
+import Input from "../../../components/ui/Input";
+import EmptyState from "../../../components/ui/EmptyState";
+import Modal from "../../../components/ui/Modal/Modal";
+import AddPatientModal from "../components/AddPatientModal";
+import { logPatientArchived, logRecordExported } from "../../../services/api/auditService";
+import { useConfirm } from "../../../contexts/ConfirmContext";
+import { notifySuccess } from "../../../common/utils/toast";
+import { ROLES } from "../../../common/constants/permissions";
+
+// Priority: higher = more urgent to surface in the status badge
+const CODING_STATUS_PRIORITY = {
+  CODING_REVISION: 5,
+  CODING_PENDING:  4,
+  CODING_COMPLETE: 3,
+  BILLING_READY:   2,
+  BILLED:          1,
+  IN_PROGRESS:     0,
+};
+
+const CODING_STATUS_BADGE = {
+  CODING_PENDING:  { label: "Awaiting Coding",  cls: "bg-warning-50 text-warning-500 border-warning-200 dark:bg-warning-500/10 dark:border-warning-500/30" },
+  CODING_COMPLETE: { label: "Pending Review",   cls: "bg-info-50 text-info-600 border-info-200 dark:bg-info-500/10 dark:text-info-500 dark:border-info-500/30" },
+  CODING_REVISION: { label: "Revision Needed",  cls: "bg-danger-50 text-danger-600 border-danger-200 dark:bg-danger-500/10 dark:text-danger-500 dark:border-danger-500/30" },
+  BILLING_READY:   { label: "Ready to Bill",    cls: "bg-primary-50 text-primary-600 border-primary-200 dark:bg-primary-500/10 dark:text-primary-400 dark:border-primary-500/30" },
+  BILLED:          { label: "Billed",           cls: "bg-success-50 text-success-600 border-success-200 dark:bg-success-500/10 dark:text-success-500 dark:border-success-500/30" },
+};
+
+export default function PatientManagementPage() {
+  const dispatch  = useDispatch();
+  const navigate  = useNavigate();
+  const allPatients = useSelector(selectAllPatients);
+  const status      = useSelector(selectPatientStatus);
+  const { encounters } = useAllEncounters();
+  const { user } = useSelector((state) => state.auth);
+  // Registration/demographics edits are physician-or-admin work on the backend
+  // (RoleAuthorizationFilter) — hidden here too so coders aren't shown controls
+  // that would just 403 on click.
+  const canEditPatients = user?.role === ROLES.PHYSICIAN || user?.role === ROLES.ADMIN;
+
+  const [searchTerm,      setSearchTerm]      = useState("");
+  const [isAddModalOpen,  setIsAddModalOpen]  = useState(false);
+  const [departmentFilter,setDepartmentFilter]= useState("All Departments");
+  const [statusFilter,    setStatusFilter]    = useState("All Status");
+  const [genderFilter,    setGenderFilter]    = useState("All Genders");
+  const [currentPage,     setCurrentPage]     = useState(1);
+  const [editingPatientId, setEditingPatientId] = useState(null); // patient.id whose edit popover is open
+  const [editDept,        setEditDept]        = useState("");
+  const [editDiagnosis,   setEditDiagnosis]   = useState("");
+  const [editStatus,      setEditStatus]      = useState("Outpatient");
+  const [isSavingEdit,    setIsSavingEdit]    = useState(false);
+  const itemsPerPage = 10;
+  const confirm = useConfirm();
+
+  const DEPARTMENT_OPTIONS = ["General Medicine","Cardiology","Endocrinology","Pulmonology","Oncology","Neurology"];
+
+  const startEditPatient = (patient, e) => {
+    e.stopPropagation();
+    setEditingPatientId(patient.id);
+    setEditDept(patient.department || DEPARTMENT_OPTIONS[0]);
+    setEditDiagnosis(patient.primaryDiagnosis === 'Pending Review' ? '' : (patient.primaryDiagnosis || ''));
+    setEditStatus(patient.status || "Outpatient");
+  };
+
+  const saveEditPatient = async (e) => {
+    e.stopPropagation();
+    setIsSavingEdit(true);
+    try {
+      await dispatch(updatePatient(editingPatientId, { department: editDept, primaryDiagnosis: editDiagnosis, status: editStatus }));
+      setEditingPatientId(null);
+    } catch {
+      // updatePatient thunk already surfaced a toast — keep the popover open to retry
+    } finally {
+      setIsSavingEdit(false);
+    }
+  };
+
+  useEffect(() => {
+    if (status === "idle") dispatch(fetchPatients());
+  }, [status, dispatch]);
+
+  // Patient CSV export — comprehensive columns
+  const handleExportPatients = () => {
+    const headers = [
+      "Patient Name", "MRN", "Date of Birth", "Age", "Gender", "Department", "Status",
+      "Allergies / Primary Diagnosis", "Active Medications",
+      "Total Encounters", "Last Encounter Date", "Last Encounter Status",
+      "Archived", "Archived Date"
+    ];
+    const escape = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+    const rows = filteredPatients.map(p => {
+      const enc = patientEncounterMap[String(p.id)];
+      const totalEnc = (encounters || []).filter(e => String(e.patientId) === String(p.id)).length;
+      return [
+        p.name, p.mrn, p.lastVisit, p.age, p.gender, p.department, p.status,
+        p.primaryDiagnosis, '—',
+        totalEnc,
+        enc?.encounterDate?.split('T')[0] || p.lastVisit,
+        enc?.status || '—',
+        p.archived ? 'Yes' : 'No',
+        p.archivedAt ? new Date(p.archivedAt).toLocaleDateString() : '—',
+      ].map(escape).join(',');
+    });
+    const csv = [headers.map(escape).join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `patients-export-${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    logRecordExported('Patient List CSV', filteredPatients.length);
+  };
+
+  // Map: patientId → most-urgent encounter (for the coding status badge)
+  const patientEncounterMap = useMemo(() => {
+    const map = {};
+    (encounters || []).forEach(enc => {
+      if (enc.status === 'BILLED') return; // Ignore terminal billed state for active status badging
+      const pid = String(enc.patientId);
+      const existing = map[pid];
+      const newPri  = CODING_STATUS_PRIORITY[enc.status] ?? -1;
+      const exPri   = existing ? (CODING_STATUS_PRIORITY[existing.status] ?? -2) : -2;
+      if (newPri > exPri) map[pid] = enc;
+    });
+    return map;
+  }, [encounters]);
+
+  const filteredPatients = useMemo(() => {
+    return allPatients.filter(p => {
+      const matchSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          p.mrn.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchDept   = departmentFilter === "All Departments" || p.department === departmentFilter;
+      const matchStatus = statusFilter === "All Status" || p.status === statusFilter;
+      const matchGender = genderFilter === "All Genders" || p.gender === genderFilter;
+      return matchSearch && matchDept && matchStatus && matchGender;
+    });
+  }, [allPatients, searchTerm, departmentFilter, statusFilter, genderFilter]);
+
+  const editingPatient = allPatients.find(p => p.id === editingPatientId) || null;
+
+  const totalPages       = Math.ceil(filteredPatients.length / itemsPerPage);
+  const paginatedPatients = filteredPatients.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  return (
+    <div className="space-y-6 animate-fade-in">
+      {/* Page Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-neutral-900 dark:text-white tracking-tight">
+            Patient Management
+          </h1>
+          <p className="text-sm text-neutral-800 dark:text-slate-400 mt-1">
+            Manage and view all patient records
+          </p>
+        </div>
+        {canEditPatients && (
+          <Button icon={Plus} onClick={() => setIsAddModalOpen(true)}>
+            Add Patient
+          </Button>
+        )}
+      </div>
+
+      {/* Filters */}
+      <Card padding="md" className="flex items-center gap-4 flex-wrap">
+        <div className="flex-1 min-w-[200px]">
+          <Input
+            placeholder="Search patients, MRN..."
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            onClear={() => setSearchTerm('')}
+            leftIcon={Search}
+          />
+        </div>
+        <div className="flex items-center gap-3 flex-wrap">
+          {[
+            { v: departmentFilter, set: setDepartmentFilter, opts: ["All Departments","Cardiology","Endocrinology","Pulmonology","Oncology","Neurology","General Medicine","Emergency","Nephrology","Dermatology"] },
+            { v: statusFilter,     set: setStatusFilter,     opts: ["All Status","Inpatient","Outpatient","Emergency","CCU Admitted","Under Observation","Admitted","Discharged"] },
+            { v: genderFilter,     set: setGenderFilter,     opts: ["All Genders","Male","Female"] },
+          ].map((f, i) => (
+            <select key={i} value={f.v} onChange={e => f.set(e.target.value)}
+              className="px-3 py-2 bg-white dark:bg-slate-800 border border-neutral-500 dark:border-slate-700 rounded-6 text-sm text-neutral-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary-500">
+              {f.opts.map(o => <option key={o}>{o}</option>)}
+            </select>
+          ))}
+          <div className="border-l border-neutral-500 dark:border-slate-700 pl-3">
+            <Button variant="ghost" size="md" icon={Download} onClick={handleExportPatients}>Export</Button>
+          </div>
+        </div>
+      </Card>
+
+      {/* Patient Table */}
+      <Card padding="none" className="overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-neutral-500 dark:border-slate-700 bg-neutral-100 dark:bg-slate-800/50">
+                {["Patient Name","MRN","Age/Gender","Status","Primary Diagnosis","Department","Last Visit","Coding Status","Actions"].map(h => (
+                  <th key={h} className={`px-4 py-3 text-xs font-semibold text-neutral-700 dark:text-slate-300 uppercase tracking-wider ${h === "Actions" ? "text-right" : "text-left"}`}>
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedPatients.length > 0 ? paginatedPatients.map((patient, index) => {
+                const topEnc      = patientEncounterMap[String(patient.id)];
+                const codingBadge = topEnc ? CODING_STATUS_BADGE[topEnc.status] : null;
+
+                return (
+                  <tr
+                    key={patient.id}
+                    onClick={() => navigate(`/encounters/${patient.id}`)}
+                    className={`border-b border-neutral-400 dark:border-slate-700/50 hover:bg-primary-50/30 dark:hover:bg-slate-800 transition-colors cursor-pointer ${
+                      index % 2 === 0 ? "bg-white dark:bg-slate-900" : "bg-neutral-50/50 dark:bg-slate-800/30"
+                    }`}
+                  >
+                    {/* Patient Name */}
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-full bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300 flex items-center justify-center font-bold text-xs flex-shrink-0">
+                          {patient.name?.split(' ').map(n => n[0]).join('') || '?'}
+                        </div>
+                        <span className="text-sm font-medium text-neutral-900 dark:text-slate-200">{patient.name}</span>
+                      </div>
+                    </td>
+
+                    {/* MRN */}
+                    <td className="px-4 py-3 text-xs font-mono text-neutral-600 dark:text-slate-400 tracking-wider">
+                      {patient.mrn}
+                    </td>
+
+                    {/* Age/Gender */}
+                    <td className="px-4 py-3 text-sm text-neutral-800 dark:text-slate-300">
+                      {patient.age}y / {patient.gender?.charAt(0)}
+                    </td>
+
+                    {/* Patient Status */}
+                    <td className="px-4 py-3">
+                      {(() => {
+                        const s = patient.status;
+                        const statusMap = {
+                          'Inpatient':          'bg-blue-50   text-blue-700   border-blue-200   dark:bg-blue-500/10   dark:text-blue-400   dark:border-blue-500/30',
+                          'Admitted':           'bg-blue-50   text-blue-700   border-blue-200   dark:bg-blue-500/10   dark:text-blue-400   dark:border-blue-500/30',
+                          'CCU Admitted':       'bg-red-50    text-red-700    border-red-200    dark:bg-red-500/10    dark:text-red-400    dark:border-red-500/30',
+                          'Emergency':          'bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/30',
+                          'Under Observation':  'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-500/10 dark:text-purple-400 dark:border-purple-500/30',
+                          'Outpatient':         'bg-green-50  text-green-700  border-green-200  dark:bg-green-500/10  dark:text-green-400  dark:border-green-500/30',
+                          'Discharged':         'bg-neutral-100 text-neutral-600 border-neutral-300 dark:bg-slate-700 dark:text-slate-400 dark:border-slate-600',
+                        };
+                        const cls = statusMap[s] || 'bg-neutral-100 text-neutral-600 border-neutral-300 dark:bg-slate-700 dark:text-slate-400 dark:border-slate-600';
+                        return (
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${cls}`}>
+                            {s || 'Unknown'}
+                          </span>
+                        );
+                      })()}
+                    </td>
+
+                    {/* Primary Diagnosis */}
+                    <td className="px-4 py-3 text-sm text-neutral-800 dark:text-slate-300 truncate max-w-[180px]" title={patient.primaryDiagnosis}>
+                      {patient.primaryDiagnosis}
+                    </td>
+
+                    {/* Department */}
+                    <td className="px-4 py-3 text-sm text-neutral-800 dark:text-slate-300">
+                      {patient.department}
+                    </td>
+
+                    {/* Last Visit */}
+                    <td className="px-4 py-3 text-sm text-neutral-800 dark:text-slate-300">
+                      {topEnc?.encounterDate?.split('T')[0] || patient.lastVisit}
+                    </td>
+
+                    {/* Coding Status — clickable badge */}
+                    <td className="px-4 py-3">
+                      {codingBadge ? (
+                        <button
+                          onClick={e => { e.stopPropagation(); navigate(`/coding/${patient.id}`); }}
+                          title={`Go to Coding Workbench for ${patient.name}`}
+                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-6 border text-[11px] font-semibold hover:opacity-80 transition-opacity ${codingBadge.cls}`}
+                        >
+                          <Activity className="w-3 h-3" />
+                          {codingBadge.label}
+                        </button>
+                      ) : (
+                        <span className="text-xs text-neutral-400 dark:text-slate-600">—</span>
+                      )}
+                    </td>
+
+                    {/* Actions */}
+                    <td className="px-4 py-3 text-right">
+                      <div className="flex items-center justify-end gap-1">
+                        {canEditPatients ? (
+                          <>
+                            <button
+                              onClick={e => startEditPatient(patient, e)}
+                              className="p-1.5 rounded-6 hover:bg-neutral-200 dark:hover:bg-slate-700 transition-colors"
+                              title="Edit Department & Primary Diagnosis"
+                            >
+                              <Pencil className="w-4 h-4 text-neutral-600 dark:text-slate-400" />
+                            </button>
+                            <button
+                              onClick={async e => {
+                                e.stopPropagation();
+                                const ok = await confirm(`Archive ${patient.name}? They will be removed from the active workspace and can be restored later from Records.`);
+                                if (ok) {
+                                  dispatch(archivePatient(patient.id));
+                                  logPatientArchived(patient.mrn, patient.name);
+                                  notifySuccess(`${patient.name} archived`);
+                                }
+                              }}
+                              className="p-1.5 rounded-6 hover:bg-neutral-200 dark:hover:bg-slate-700 transition-colors"
+                              title="Archive Patient"
+                            >
+                              <Archive className="w-4 h-4 text-neutral-600 dark:text-slate-400" />
+                            </button>
+                          </>
+                        ) : (
+                          <span className="text-xs text-neutral-400 dark:text-slate-600">—</span>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              }) : (
+                <tr>
+                  <td colSpan="9">
+                    <EmptyState icon={Search} title="No patients found" description="Try adjusting your search or filters." />
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Pagination */}
+        <div className="flex items-center justify-between px-4 py-3 bg-neutral-100 dark:bg-slate-800/50 border-t border-neutral-500 dark:border-slate-700">
+          <span className="text-sm text-neutral-800 dark:text-slate-300">
+            Showing {filteredPatients.length === 0 ? 0 : Math.min((currentPage - 1) * itemsPerPage + 1, filteredPatients.length)}–
+            {Math.min(currentPage * itemsPerPage, filteredPatients.length)} of {filteredPatients.length} patients
+          </span>
+          <div className="flex items-center gap-1">
+            <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}
+              className={`w-8 h-8 flex items-center justify-center border border-neutral-500 dark:border-slate-700 rounded-6 ${currentPage === 1 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-neutral-200 dark:hover:bg-slate-700 text-neutral-800 dark:text-slate-300'}`}>
+              ←
+            </button>
+            <button className="w-8 h-8 flex items-center justify-center border border-neutral-500 dark:border-slate-700 rounded-6 bg-primary-500 text-white text-xs font-bold">
+              {currentPage}
+            </button>
+            <button onClick={() => setCurrentPage(p => Math.min(totalPages || 1, p + 1))} disabled={currentPage >= (totalPages || 1)}
+              className={`w-8 h-8 flex items-center justify-center border border-neutral-500 dark:border-slate-700 rounded-6 ${currentPage >= (totalPages || 1) ? 'opacity-40 cursor-not-allowed' : 'hover:bg-neutral-200 dark:hover:bg-slate-700 text-neutral-800 dark:text-slate-300'}`}>
+              →
+            </button>
+          </div>
+        </div>
+      </Card>
+
+      <AddPatientModal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} />
+
+      <Modal
+        isOpen={!!editingPatientId}
+        onClose={() => setEditingPatientId(null)}
+        title={editingPatient ? `Edit ${editingPatient.name}` : 'Edit Patient'}
+        size="sm"
+      >
+        <div className="space-y-4">
+          <div>
+            <label className="block text-xs font-semibold text-neutral-700 dark:text-slate-300 mb-1.5">Department</label>
+            <select
+              autoFocus
+              value={editDept}
+              onChange={e => setEditDept(e.target.value)}
+              className="w-full px-3 py-2 text-sm border border-neutral-400 dark:border-slate-600 rounded-6 bg-white dark:bg-slate-900 text-neutral-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            >
+              {DEPARTMENT_OPTIONS.map(d => <option key={d} value={d}>{d}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-neutral-700 dark:text-slate-300 mb-1.5">Primary Diagnosis</label>
+            <input
+              value={editDiagnosis}
+              onChange={e => setEditDiagnosis(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && saveEditPatient(e)}
+              placeholder="e.g. Type 2 Diabetes"
+              className="w-full px-3 py-2 text-sm border border-neutral-400 dark:border-slate-600 rounded-6 bg-white dark:bg-slate-900 text-neutral-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-neutral-700 dark:text-slate-300 mb-1.5">Status</label>
+            <select
+              value={editStatus}
+              onChange={e => setEditStatus(e.target.value)}
+              className="w-full px-3 py-2 text-sm border border-neutral-400 dark:border-slate-600 rounded-6 bg-white dark:bg-slate-900 text-neutral-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            >
+              <option value="Inpatient">Inpatient (Admitted)</option>
+              <option value="Outpatient">Outpatient</option>
+              <option value="Emergency">Emergency / Under Observation</option>
+              <option value="Under Observation">Under Observation</option>
+              <option value="CCU Admitted">CCU Admitted</option>
+              <option value="Discharged">Discharged</option>
+            </select>
+          </div>
+          <div className="flex justify-end gap-2 pt-2 border-t border-neutral-200 dark:border-slate-700">
+            <button onClick={() => setEditingPatientId(null)} className="px-3 py-1.5 text-xs font-semibold text-neutral-600 dark:text-slate-400 hover:text-neutral-900 dark:hover:text-slate-200">Cancel</button>
+            <button onClick={saveEditPatient} disabled={isSavingEdit} className="px-3 py-1.5 text-xs font-semibold text-white bg-primary-500 hover:bg-primary-600 rounded-6 disabled:opacity-50">
+              {isSavingEdit ? "Saving..." : "Save"}
+            </button>
+          </div>
+        </div>
+      </Modal>
+    </div>
+  );
+}
