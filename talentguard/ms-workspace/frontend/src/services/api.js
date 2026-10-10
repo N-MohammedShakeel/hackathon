@@ -6,6 +6,7 @@ const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true',
   },
 });
 
@@ -44,6 +45,24 @@ export const getFeatureImportance = async () => {
 
 export const generateRetentionPlan = async (retentionPlanRequest) => {
   const response = await api.post('/agent/retention-plan', retentionPlanRequest);
+  return response.data;
+};
+
+export const sendChatMessage = async (message, conversationHistory = []) => {
+  const response = await api.post('/chat/message', {
+    message,
+    conversation_history: conversationHistory,
+  });
+  return response.data;
+};
+
+export const getChatStatus = async () => {
+  const response = await api.get('/chat/status');
+  return response.data;
+};
+
+export const setChatApiKey = async (apiKey) => {
+  const response = await api.post('/chat/set-key', { api_key: apiKey });
   return response.data;
 };
 

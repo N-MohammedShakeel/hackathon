@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Sparkles, Copy, Check, ShieldAlert, Mail } from 'lucide-react';
+import { X, Sparkles, Copy, Check, ShieldAlert, Mail, Clock, User, AlertCircle } from 'lucide-react';
 import { generateRetentionPlan } from '../services/api';
 
 export const RetentionPlanModal = ({ isOpen, onClose, employeeData }) => {
@@ -9,7 +9,9 @@ export const RetentionPlanModal = ({ isOpen, onClose, employeeData }) => {
   const [approved, setApproved] = useState(false);
 
   React.useEffect(() => {
-    if (isOpen && employeeData && !plan) {
+    if (isOpen && employeeData) {
+      setPlan(null);
+      setApproved(false);
       fetchPlan();
     }
   }, [isOpen, employeeData]);
@@ -18,20 +20,20 @@ export const RetentionPlanModal = ({ isOpen, onClose, employeeData }) => {
     setLoading(true);
     try {
       const req = {
-        employee_id: employeeData.employee_id || 1001,
-        probability: employeeData.attrition_probability || 0.85,
-        risk_band: employeeData.risk_band || 'High',
-        department: employeeData.department || 'Sales',
-        job_role: employeeData.job_role || 'Sales Representative',
+        employee_id:    employeeData.employee_id   || 1001,
+        probability:    employeeData.attrition_probability || 0.85,
+        risk_band:      employeeData.risk_band      || 'High',
+        department:     employeeData.department     || 'Sales',
+        job_role:       employeeData.job_role       || 'Sales Representative',
         monthly_income: employeeData.monthly_income || 2200,
-        overtime: employeeData.overtime || 'Yes',
+        overtime:       employeeData.overtime       || 'Yes',
         years_at_company: employeeData.years_at_company || 1,
-        shap_factors: employeeData.top_risk_factors || employeeData.shap_explanation || []
+        shap_factors:   employeeData.top_risk_factors || employeeData.shap_explanation || [],
       };
       const res = await generateRetentionPlan(req);
       setPlan(res);
     } catch (err) {
-      console.error("Failed to generate retention plan", err);
+      console.error('Failed to generate retention plan', err);
     } finally {
       setLoading(false);
     }
@@ -47,110 +49,140 @@ export const RetentionPlanModal = ({ isOpen, onClose, employeeData }) => {
 
   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-      <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto glass-panel border border-slate-700 p-6 shadow-2xl rounded-2xl">
-        <button 
-          onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800"
-        >
-          <X className="w-5 h-5" />
-        </button>
+  const priorityConfig = {
+    High:   'bg-rose-50 text-rose-700 border-rose-200',
+    Medium: 'bg-amber-50 text-amber-700 border-amber-200',
+  };
 
-        <div className="flex items-center gap-3 border-b border-slate-800 pb-4 mb-5">
-          <div className="p-2.5 bg-indigo-500/20 text-indigo-400 rounded-xl border border-indigo-500/30">
-            <Sparkles className="w-6 h-6 animate-pulse" />
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(15,23,42,0.5)', backdropFilter: 'blur(4px)' }}>
+      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-slate-200 fade-in">
+        {/* ── Modal Header ── */}
+        <div className="px-6 py-4 border-b border-slate-100 flex items-center gap-3">
+          <div className="p-2 rounded-xl bg-indigo-50 border border-indigo-100">
+            <Sparkles className="w-5 h-5 text-indigo-600" />
           </div>
-          <div>
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              AI Retention Coach Agent
-              <span className="text-xs bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded-full font-normal">
+          <div className="flex-1">
+            <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              AI Retention Coach
+              <span className="text-[10px] font-normal bg-indigo-50 text-indigo-600 border border-indigo-100 px-2 py-0.5 rounded-full">
                 Gemini 1.5 Flash
               </span>
             </h2>
-            <p className="text-xs text-slate-400">
-              Auto-generated retention strategy & manager outreach draft for Employee #{employeeData?.employee_id || 'ID'}
+            <p className="text-xs text-slate-500 mt-0.5">
+              Employee #{employeeData?.employee_id} · {employeeData?.job_role} · {employeeData?.department}
             </p>
           </div>
+          <button
+            id="btn-close-retention-modal"
+            onClick={onClose}
+            className="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
 
-        {loading ? (
-          <div className="py-12 text-center">
-            <div className="inline-block w-8 h-8 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-            <p className="mt-3 text-sm text-slate-400">Synthesizing SHAP explainability insights & drafting plan...</p>
-          </div>
-        ) : plan ? (
-          <div className="space-y-6">
-            {/* Risk Summary */}
-            <div className="p-4 bg-rose-500/10 border border-rose-500/20 rounded-xl">
-              <h4 className="text-xs font-semibold text-rose-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                <ShieldAlert className="w-4 h-4" /> Attrition Risk Summary
-              </h4>
-              <p className="text-sm text-slate-200">{plan.risk_summary}</p>
+        {/* ── Body ── */}
+        <div className="px-6 py-5">
+          {loading ? (
+            <div className="py-14 flex flex-col items-center gap-3 text-center">
+              <div className="w-10 h-10 border-3 border-indigo-200 border-t-indigo-600 rounded-full animate-spin" style={{ borderWidth: 3 }} />
+              <p className="text-sm font-medium text-slate-700">Synthesising SHAP insights…</p>
+              <p className="text-xs text-slate-400">Drafting personalised retention strategy via Gemini AI</p>
             </div>
+          ) : plan ? (
+            <div className="space-y-5">
+              {/* Risk Summary */}
+              <div className="p-4 rounded-xl bg-rose-50 border border-rose-100 flex gap-3">
+                <ShieldAlert className="w-4 h-4 text-rose-600 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs font-semibold text-rose-700 uppercase tracking-wider mb-1">Attrition Risk Summary</p>
+                  <p className="text-sm text-rose-900 leading-relaxed">{plan.risk_summary}</p>
+                </div>
+              </div>
 
-            {/* Recommended Actions */}
-            <div>
-              <h3 className="text-sm font-semibold text-slate-300 mb-3">Prioritized Retention Interventions</h3>
-              <div className="space-y-2.5">
-                {plan.actions.map((act, i) => (
-                  <div key={i} className="p-3.5 bg-slate-900/90 border border-slate-800 rounded-lg flex items-start justify-between gap-4">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-400 text-xs font-bold flex items-center justify-center">
-                          {i + 1}
+              {/* Actions */}
+              <div>
+                <h3 className="text-sm font-semibold text-slate-800 mb-3">Prioritised Retention Interventions</h3>
+                <div className="space-y-2">
+                  {plan.actions.map((act, i) => (
+                    <div key={i} className="p-4 rounded-xl border border-slate-100 bg-slate-50 hover:border-indigo-200 transition-colors">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex items-start gap-3 flex-1">
+                          <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                            {i + 1}
+                          </span>
+                          <div>
+                            <p className="text-sm font-semibold text-slate-900">{act.action}</p>
+                            <p className="text-xs text-slate-500 mt-1">{act.rationale}</p>
+                            <div className="flex items-center gap-3 mt-2 text-[10px] text-slate-400">
+                              <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{act.timeline}</span>
+                              <span className="flex items-center gap-1"><User className="w-3 h-3" />{act.owner}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <span className={`text-[10px] px-2 py-1 rounded-full font-bold border shrink-0 ${priorityConfig[act.priority] || priorityConfig.Medium}`}>
+                          {act.priority}
                         </span>
-                        <h4 className="text-sm font-semibold text-white">{act.action}</h4>
                       </div>
-                      <p className="text-xs text-slate-400 mt-1 pl-7">{act.rationale}</p>
                     </div>
-                    <div className="text-right shrink-0">
-                      <span className={`text-xs px-2 py-0.5 rounded font-medium ${act.priority === 'High' ? 'bg-rose-500/20 text-rose-300' : 'bg-amber-500/20 text-amber-300'}`}>
-                        {act.priority} Priority
-                      </span>
-                      <p className="text-[11px] text-slate-500 mt-1">{act.timeline} · {act.owner}</p>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </div>
+
+              {/* Email Draft */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-sm font-semibold text-slate-800 flex items-center gap-2">
+                    <Mail className="w-4 h-4 text-indigo-500" />
+                    Auto-Drafted Retention Email
+                  </h3>
+                  <span className={`text-[10px] px-2.5 py-1 rounded-full font-bold border ${
+                    approved
+                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                      : 'bg-amber-50 text-amber-700 border-amber-200 animate-pulse'
+                  }`}>
+                    {approved ? '✓ APPROVED' : 'PENDING APPROVAL'}
+                  </span>
+                </div>
+
+                <div className="relative p-4 rounded-xl border border-slate-200 bg-slate-50 font-mono text-xs text-slate-700 leading-relaxed whitespace-pre-wrap max-h-48 overflow-y-auto">
+                  {plan.email_draft}
+                </div>
+
+                <div className="mt-3 flex items-center gap-2">
+                  <button
+                    id="btn-copy-email"
+                    onClick={handleCopy}
+                    className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium border border-slate-200 rounded-lg bg-white hover:bg-slate-50 text-slate-700 transition-colors"
+                  >
+                    {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copied ? 'Copied!' : 'Copy Email'}
+                  </button>
+                  <button
+                    id="btn-approve-email"
+                    onClick={() => setApproved(!approved)}
+                    className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-colors ${
+                      approved
+                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                        : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                    }`}
+                  >
+                    {approved ? 'Approved ✓ — Ready to Send' : 'Approve Draft for Sending'}
+                  </button>
+                </div>
               </div>
             </div>
-
-            {/* Auto-Drafted Retention Email - Bonus Feature */}
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-sm font-semibold text-slate-300 flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-indigo-400" /> Auto-Drafted Retention Email
-                </h3>
-                <span className={`text-xs px-2.5 py-0.5 rounded-full font-bold border ${approved ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : 'bg-amber-500/20 text-amber-400 border-amber-500/30 animate-pulse'}`}>
-                  {approved ? 'APPROVED & READY' : 'PENDING_APPROVAL'}
-                </span>
-              </div>
-
-              <div className="relative p-4 bg-slate-950 border border-slate-800 rounded-xl font-mono text-xs text-slate-300 leading-relaxed whitespace-pre-wrap max-h-56 overflow-y-auto">
-                {plan.email_draft}
-              </div>
-
-              <div className="mt-3 flex items-center justify-between">
-                <button
-                  onClick={handleCopy}
-                  className="px-3.5 py-2 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg flex items-center gap-1.5 transition-colors"
-                >
-                  {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-                  {copied ? 'Copied to Clipboard' : 'Copy Email Text'}
-                </button>
-
-                <button
-                  onClick={() => setApproved(!approved)}
-                  className={`px-4 py-2 text-xs font-semibold rounded-lg transition-colors ${approved ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-indigo-600 hover:bg-indigo-500 text-white'}`}
-                >
-                  {approved ? 'Approved ✓' : 'Approve Draft for Sending'}
-                </button>
-              </div>
+          ) : (
+            <div className="py-12 flex flex-col items-center gap-2 text-slate-400">
+              <AlertCircle className="w-8 h-8" />
+              <p className="text-sm">Failed to generate plan. Please retry.</p>
+              <button onClick={fetchPlan} className="mt-2 px-4 py-2 text-xs bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                Retry
+              </button>
             </div>
-          </div>
-        ) : (
-          <div className="py-8 text-center text-slate-400 text-sm">Failed to load plan.</div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

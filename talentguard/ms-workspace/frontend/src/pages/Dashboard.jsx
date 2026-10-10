@@ -3,9 +3,26 @@ import { getDashboardOverview } from '../services/api';
 import { KpiCard } from '../components/KpiCard';
 import { RiskBadge } from '../components/RiskBadge';
 import { RetentionPlanModal } from '../components/RetentionPlanModal';
-import { Users, AlertTriangle, UserMinus, Percent, ArrowRight, Sparkles, PieChart as PieIcon } from 'lucide-react';
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import {
+  Users, AlertTriangle, UserCheck, TrendingDown,
+  ArrowRight, Sparkles, Activity
+} from 'lucide-react';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { Link } from 'react-router-dom';
+
+const PIE_COLORS = { High: '#dc2626', Medium: '#d97706', Low: '#16a34a' };
+
+const CustomTooltip = ({ active, payload }) => {
+  if (active && payload?.length) {
+    return (
+      <div className="bg-white border border-slate-200 rounded-lg px-3 py-2 shadow-lg text-xs">
+        <strong className="text-slate-800">{payload[0].name}</strong>
+        <div className="text-slate-500 mt-0.5">{payload[0].value} employees</div>
+      </div>
+    );
+  }
+  return null;
+};
 
 export const Dashboard = () => {
   const [data, setData] = useState(null);
@@ -13,16 +30,14 @@ export const Dashboard = () => {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  useEffect(() => {
-    fetchDashboard();
-  }, []);
+  useEffect(() => { fetchDashboard(); }, []);
 
   const fetchDashboard = async () => {
     try {
       const res = await getDashboardOverview();
       setData(res);
     } catch (err) {
-      console.error("Error fetching overview", err);
+      console.error('Error fetching overview', err);
     } finally {
       setLoading(false);
     }
@@ -30,181 +45,208 @@ export const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-full py-24">
-        <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+      <div className="space-y-6 animate-pulse">
+        <div className="grid grid-cols-4 gap-4">
+          {[...Array(4)].map((_, i) => <div key={i} className="skeleton h-28 rounded-xl" />)}
+        </div>
+        <div className="skeleton h-64 rounded-xl" />
+        <div className="skeleton h-72 rounded-xl" />
       </div>
     );
   }
 
   const pieData = [
-    { name: 'High Risk', value: data?.high_risk_count || 0, color: '#f43f5e' },
-    { name: 'Medium Risk', value: data?.medium_risk_count || 0, color: '#f59e0b' },
-    { name: 'Low Risk', value: data?.low_risk_count || 0, color: '#10b981' },
+    { name: 'High Risk',   value: data?.high_risk_count   || 0 },
+    { name: 'Medium Risk', value: data?.medium_risk_count || 0 },
+    { name: 'Low Risk',    value: data?.low_risk_count    || 0 },
   ];
 
+  const deptBarData = Object.entries(data?.dept_breakdown || {}).map(([dept, count]) => ({
+    name: dept, count,
+  }));
+
   return (
-    <div className="space-y-6">
-      {/* Page Title */}
+    <div className="space-y-6 fade-in">
+      {/* ── Page header ── */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Executive HR Overview</h1>
-          <p className="text-xs text-slate-400 mt-1">
-            Real-time attrition monitoring for TechNova Solutions (1470 Active Workforce)
+          <h1 className="text-xl font-bold text-slate-900">Executive HR Overview</h1>
+          <p className="text-sm text-slate-500 mt-0.5">
+            Real-time attrition analytics · TechNova Solutions · 1,470 active employees
           </p>
         </div>
-        <Link 
+        <Link
           to="/watchlist"
-          className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-indigo-600/30 flex items-center gap-2 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold transition-colors shadow-sm"
         >
-          View Full Top-50 Watch List <ArrowRight className="w-4 h-4" />
+          Full Watch List <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
 
-      {/* KPI Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <KpiCard 
-          title="Total Workforce" 
-          value={data?.total_employees || 1470} 
-          subtitle="Analyzed employees"
+      {/* ── KPI Cards ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <KpiCard
+          title="Total Workforce"
+          value={(data?.total_employees || 1470).toLocaleString()}
+          subtitle="Analyzed via Random Forest"
           icon={Users}
           color="indigo"
         />
-        <KpiCard 
-          title="High Risk Employees" 
-          value={data?.high_risk_count || 50} 
-          subtitle="Probability >= 70%"
+        <KpiCard
+          title="High Risk Employees"
+          value={data?.high_risk_count || 50}
+          subtitle="Risk score ≥ 70%"
           icon={AlertTriangle}
           color="rose"
+          trend="Immediate HR action required"
+          trendDir="up"
         />
-        <KpiCard 
-          title="Stated HR Capacity" 
-          value="50 Talks / Cycle" 
-          subtitle="Tied to capacity constraint"
-          icon={UserMinus}
+        <KpiCard
+          title="HR Capacity"
+          value="50 Talks / Cycle"
+          subtitle="Precision@50 constraint"
+          icon={UserCheck}
           color="amber"
         />
-        <KpiCard 
-          title="Baseline Attrition Rate" 
-          value={`${((data?.attrition_rate || 0.161) * 100).toFixed(1)}%`} 
-          subtitle="TechNova annual baseline"
-          icon={Percent}
+        <KpiCard
+          title="Baseline Attrition"
+          value={`${((data?.attrition_rate || 0.161) * 100).toFixed(1)}%`}
+          subtitle="TechNova annual rate"
+          icon={TrendingDown}
           color="emerald"
+          trend="Target: reduce below 12%"
+          trendDir="down"
         />
       </div>
 
-      {/* Middle Section: Chart & Department Breakdown */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Risk Distribution Pie Chart */}
-        <div className="glass-panel p-5">
-          <h3 className="text-sm font-semibold text-slate-200 flex items-center gap-2 mb-4">
-            <PieIcon className="w-4 h-4 text-indigo-400" /> Attrition Risk Distribution
-          </h3>
-          <div className="h-56">
+      {/* ── Charts row ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
+        {/* Pie chart */}
+        <div className="glass-panel p-5 lg:col-span-2">
+          <div className="flex items-center gap-2 mb-1">
+            <Activity className="w-4 h-4 text-indigo-500" />
+            <h3 className="text-sm font-semibold text-slate-800">Risk Distribution</h3>
+          </div>
+          <p className="text-xs text-slate-400 mb-4">Top-50 watchlist breakdown by band</p>
+          <div className="h-52">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={pieData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  paddingAngle={5}
+                  innerRadius={56}
+                  outerRadius={75}
+                  paddingAngle={4}
                   dataKey="value"
                 >
-                  {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  {pieData.map((entry) => (
+                    <Cell key={entry.name} fill={PIE_COLORS[entry.name.split(' ')[0]]} />
                   ))}
                 </Pie>
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '0.5rem', color: '#f8fafc' }}
-                />
+                <Tooltip content={<CustomTooltip />} />
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="flex items-center justify-center gap-6 text-xs mt-2">
-            {pieData.map((item, idx) => (
-              <div key={idx} className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></span>
-                <span className="text-slate-300 font-medium">{item.name}: {item.value}</span>
+          <div className="flex flex-col gap-2 mt-2">
+            {pieData.map((item) => (
+              <div key={item.name} className="flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2">
+                  <span
+                    className="w-2.5 h-2.5 rounded-sm"
+                    style={{ backgroundColor: PIE_COLORS[item.name.split(' ')[0]] }}
+                  />
+                  <span className="text-slate-600 font-medium">{item.name}</span>
+                </div>
+                <span className="font-bold text-slate-800">{item.value}</span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Top Department Risk Factors */}
-        <div className="glass-panel p-5 lg:col-span-2">
-          <h3 className="text-sm font-semibold text-slate-200 mb-4">Department Attrition Exposure (Top-50 Focus)</h3>
-          <div className="space-y-4">
-            {Object.entries(data?.dept_breakdown || {}).map(([dept, count], idx) => (
-              <div key={idx} className="space-y-1">
-                <div className="flex justify-between text-xs font-semibold text-slate-300">
-                  <span>{dept}</span>
-                  <span className="text-indigo-400">{count} Employees in Top Risk Queue</span>
-                </div>
-                <div className="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-gradient-to-r from-indigo-500 to-rose-500 rounded-full transition-all duration-500"
-                    style={{ width: `${(count / (data?.high_risk_count || 50)) * 100}%` }}
-                  ></div>
-                </div>
-              </div>
-            ))}
+        {/* Dept bar chart */}
+        <div className="glass-panel p-5 lg:col-span-3">
+          <h3 className="text-sm font-semibold text-slate-800 mb-1">Department Exposure</h3>
+          <p className="text-xs text-slate-400 mb-4">Employees in top-50 risk queue by department</p>
+          <div className="h-52">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={deptBarData} barSize={28}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#64748b' }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 10, fill: '#64748b' }} axisLine={false} tickLine={false} />
+                <Tooltip
+                  cursor={{ fill: '#f8fafc' }}
+                  contentStyle={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 8, fontSize: 12 }}
+                />
+                <Bar dataKey="count" fill="#6366f1" radius={[4, 4, 0, 0]} name="At-Risk Employees" />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
 
-          <div className="mt-6 p-3.5 bg-slate-950/80 border border-slate-800 rounded-xl flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs text-slate-400">
-              <Sparkles className="w-4 h-4 text-purple-400" />
-              <span>Key Insight: Sales Representatives show up to 40% attrition rate — overtime is the top driver.</span>
-            </div>
+          {/* Insight chip */}
+          <div className="mt-3 flex items-center gap-2 px-3 py-2 rounded-lg bg-indigo-50 border border-indigo-100">
+            <Sparkles className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+            <p className="text-xs text-indigo-700 font-medium">
+              Sales Representatives show the highest attrition risk — overtime is the top driver.
+            </p>
           </div>
         </div>
       </div>
 
-      {/* Top 10 Priority Watch Table */}
-      <div className="glass-panel p-5">
-        <div className="flex items-center justify-between mb-4">
+      {/* ── Top 10 Table ── */}
+      <div className="glass-panel overflow-hidden">
+        <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-semibold text-slate-200">Top 10 High Priority Retention Queue</h3>
-            <p className="text-xs text-slate-400">Top candidates for immediate HR intervention talks</p>
+            <h3 className="text-sm font-semibold text-slate-800">Top 10 Priority Retention Queue</h3>
+            <p className="text-xs text-slate-400 mt-0.5">Candidates for immediate HR intervention talks</p>
           </div>
-          <span className="text-xs text-indigo-400 font-mono">Precision@50 Capacity Optimized</span>
+          <span className="text-[10px] font-mono text-indigo-600 bg-indigo-50 border border-indigo-100 px-2 py-1 rounded-full">
+            Precision@50 Optimised
+          </span>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-300">
-            <thead className="bg-slate-950/80 uppercase text-[10px] text-slate-400 border-b border-slate-800">
-              <tr>
-                <th className="p-3">Rank</th>
-                <th className="p-3">Employee ID</th>
-                <th className="p-3">Department</th>
-                <th className="p-3">Job Role</th>
-                <th className="p-3">Risk Level</th>
-                <th className="p-3">Top Risk Reason</th>
-                <th className="p-3 text-right">Action</th>
+          <table className="w-full text-left text-xs">
+            <thead>
+              <tr className="bg-slate-50 border-b border-slate-100">
+                {['Rank', 'Employee', 'Department', 'Job Role', 'Risk Level', 'Top Risk Reason', 'Action'].map(h => (
+                  <th key={h} className={`px-4 py-3 text-[10px] font-semibold text-slate-500 uppercase tracking-wider ${h === 'Action' ? 'text-right' : ''}`}>
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60">
-              {data?.top_10_at_risk?.map((emp) => (
-                <tr key={emp.rank} className="hover:bg-slate-800/40 transition-colors">
-                  <td className="p-3 font-bold text-slate-200">#{emp.rank}</td>
-                  <td className="p-3 font-mono text-indigo-300">EMP-{emp.employee_id}</td>
-                  <td className="p-3">{emp.department}</td>
-                  <td className="p-3 font-medium text-white">{emp.job_role}</td>
-                  <td className="p-3">
+            <tbody className="divide-y divide-slate-50">
+              {data?.top_10_at_risk?.map((emp, idx) => (
+                <tr
+                  key={emp.rank}
+                  className="hover:bg-slate-50 transition-colors group"
+                  style={{ animationDelay: `${idx * 30}ms` }}
+                >
+                  <td className="px-4 py-3">
+                    <span className="w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-[10px] font-bold flex items-center justify-center">
+                      {emp.rank}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 font-mono text-indigo-600 font-semibold">EMP-{emp.employee_id}</td>
+                  <td className="px-4 py-3 text-slate-600">{emp.department}</td>
+                  <td className="px-4 py-3 text-slate-800 font-medium">{emp.job_role}</td>
+                  <td className="px-4 py-3">
                     <RiskBadge band={emp.risk_band} score={Math.round(emp.attrition_probability * 100)} />
                   </td>
-                  <td className="p-3 text-slate-400">
-                    {emp.top_risk_factors?.[0]?.label || 'Works Overtime'}
+                  <td className="px-4 py-3">
+                    <span className="inline-block bg-rose-50 text-rose-700 border border-rose-100 px-2 py-0.5 rounded text-[10px] font-medium">
+                      {emp.top_risk_factors?.[0]?.label || '—'}
+                    </span>
                   </td>
-                  <td className="p-3 text-right">
+                  <td className="px-4 py-3 text-right">
                     <button
-                      onClick={() => {
-                        setSelectedEmployee(emp);
-                        setModalOpen(true);
-                      }}
-                      className="px-3 py-1.5 bg-indigo-600/20 hover:bg-indigo-600 text-indigo-300 hover:text-white border border-indigo-500/30 rounded-lg text-[11px] font-semibold flex items-center gap-1.5 ml-auto transition-all"
+                      id={`btn-draft-plan-emp-${emp.employee_id}`}
+                      onClick={() => { setSelectedEmployee(emp); setModalOpen(true); }}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-indigo-200 bg-white hover:bg-indigo-50 hover:border-indigo-400 text-indigo-600 text-[11px] font-semibold transition-all"
                     >
-                      <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Draft AI Plan
+                      <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                      Draft AI Plan
                     </button>
                   </td>
                 </tr>
@@ -214,10 +256,9 @@ export const Dashboard = () => {
         </div>
       </div>
 
-      {/* AI Retention Plan Modal */}
-      <RetentionPlanModal 
+      <RetentionPlanModal
         isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
+        onClose={() => { setModalOpen(false); setSelectedEmployee(null); }}
         employeeData={selectedEmployee}
       />
     </div>

@@ -6,6 +6,7 @@ import { WatchList } from './pages/WatchList';
 import { Predictor } from './pages/Predictor';
 import { WhatIf } from './pages/WhatIf';
 import { ModelPerformance } from './pages/ModelPerformance';
+import { ChatPage } from './pages/ChatPage';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="predictor" element={<Predictor />} />
           <Route path="whatif" element={<WhatIf />} />
           <Route path="model-stats" element={<ModelPerformance />} />
+          <Route path="chat" element={<ChatPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from config import CORS_ORIGINS
-from routers import predict, dashboard, model_info, agent
+from routers import predict, dashboard, model_info, agent, chat
 
 app = FastAPI(
     title="TalentGuard HR Attrition & Retention Intelligence API",
@@ -23,6 +23,7 @@ app.include_router(predict.router)
 app.include_router(dashboard.router)
 app.include_router(model_info.router)
 app.include_router(agent.router)
+app.include_router(chat.router)
 
 @app.get("/api/v1/health", tags=["Health"])
 def health_check():

@@ -1,113 +1,139 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { 
-  ShieldAlert, 
+  ShieldCheck, 
   LayoutDashboard, 
   ListFilter, 
   UserCheck, 
   SlidersHorizontal, 
   BarChart3, 
-  Sparkles,
-  Zap
+  MessageSquare,
+  Zap,
+  ChevronRight,
+  Bell,
+  HelpCircle
 } from 'lucide-react';
 
 export const Layout = () => {
+  const [chatOpen, setChatOpen] = useState(false);
+
   const navItems = [
-    { path: '/', label: 'Overview Dashboard', icon: LayoutDashboard },
-    { path: '/watchlist', label: 'Top-50 Watch List', icon: ListFilter, badge: 'T4 Required' },
-    { path: '/predictor', label: 'Employee Predictor', icon: UserCheck },
-    { path: '/whatif', label: 'What-If Simulator', icon: SlidersHorizontal },
-    { path: '/model-stats', label: 'Model Metrics', icon: BarChart3 },
+    { path: '/', label: 'Overview', sublabel: 'Executive Dashboard', icon: LayoutDashboard },
+    { path: '/watchlist', label: 'Watch List', sublabel: 'Top-50 At-Risk', icon: ListFilter, badge: 'T4' },
+    { path: '/predictor', label: 'Predictor', sublabel: 'Single Employee', icon: UserCheck },
+    { path: '/whatif', label: 'What-If', sublabel: 'Scenario Simulator', icon: SlidersHorizontal },
+    { path: '/model-stats', label: 'Model Metrics', sublabel: 'RF Performance', icon: BarChart3 },
+    { path: '/chat', label: 'AI Assistant', sublabel: 'Ask about employees', icon: MessageSquare, highlight: true },
   ];
 
   return (
-    <div className="flex h-screen overflow-hidden bg-slate-950 text-slate-100">
-      {/* Sidebar */}
-      <aside className="w-64 shrink-0 bg-slate-900/90 border-r border-slate-800 flex flex-col justify-between">
-        <div>
-          {/* Logo & Header */}
-          <div className="p-5 border-b border-slate-800/80 flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-tr from-indigo-600 to-purple-500 rounded-xl shadow-lg shadow-indigo-500/20 text-white">
-              <ShieldAlert className="w-6 h-6" />
+    <div className="flex h-screen overflow-hidden" style={{ background: '#f1f5f9' }}>
+      {/* ── Sidebar ── */}
+      <aside className="w-60 shrink-0 flex flex-col sidebar" style={{ zIndex: 20 }}>
+        {/* Logo */}
+        <div className="px-5 py-5 border-b border-slate-100">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-md" 
+                 style={{ background: 'linear-gradient(135deg, #6366f1, #818cf8)' }}>
+              <ShieldCheck className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-bold tracking-tight text-white flex items-center gap-1.5">
-                TalentGuard
-                <span className="text-[10px] uppercase tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-1.5 py-0.2 rounded">
-                  P1 HR AI
-                </span>
-              </h1>
-              <p className="text-[11px] text-slate-400">TechNova Retention Brain</p>
+              <h1 className="text-sm font-bold text-slate-900 tracking-tight">TalentGuard</h1>
+              <p className="text-[10px] text-slate-400 font-medium">HR Intelligence Platform</p>
             </div>
           </div>
+        </div>
 
-          {/* Navigation */}
-          <nav className="p-3 space-y-1">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  className={({ isActive }) => `
-                    flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-150
-                    ${isActive 
-                      ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 font-bold' 
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'}
-                  `}
-                >
-                  <div className="flex items-center gap-3">
-                    <Icon className="w-4 h-4" />
-                    <span>{item.label}</span>
+        {/* Nav */}
+        <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+          <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest px-3 mb-2">Navigation</p>
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                end={item.path === '/'}
+                className={({ isActive }) =>
+                  `flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 group ${
+                    isActive
+                      ? 'bg-indigo-50 text-indigo-700 border border-indigo-100'
+                      : item.highlight
+                      ? 'text-indigo-600 hover:bg-indigo-50'
+                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                  }`
+                }
+              >
+                <div className="flex items-center gap-3">
+                  <Icon className="w-4 h-4 shrink-0" />
+                  <div>
+                    <div className="leading-tight">{item.label}</div>
+                    <div className="text-[10px] text-slate-400 font-normal leading-tight">{item.sublabel}</div>
                   </div>
+                </div>
+                <div className="flex items-center gap-1">
                   {item.badge && (
-                    <span className="text-[9px] bg-rose-500/20 text-rose-300 border border-rose-500/30 px-1.5 py-0.5 rounded font-mono">
+                    <span className="text-[9px] bg-rose-100 text-rose-600 border border-rose-200 px-1.5 py-0.5 rounded font-bold font-mono">
                       {item.badge}
                     </span>
                   )}
-                </NavLink>
-              );
-            })}
-          </nav>
-        </div>
+                  <ChevronRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-slate-400" />
+                </div>
+              </NavLink>
+            );
+          })}
+        </nav>
 
-        {/* Footer Agent Status */}
-        <div className="p-4 m-3 bg-slate-950/80 border border-slate-800/80 rounded-xl">
-          <div className="flex items-center gap-2 text-xs font-semibold text-indigo-400 mb-1">
-            <Sparkles className="w-4 h-4 animate-spin text-purple-400" />
-            AI Retention Agent Active
+        {/* Sidebar Footer */}
+        <div className="px-4 pb-5 space-y-3">
+          {/* Live Status */}
+          <div className="p-3 rounded-xl border border-slate-100 bg-white">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-xs font-semibold text-slate-700">AI System Online</span>
+            </div>
+            <p className="text-[10px] text-slate-400 leading-relaxed">Gemini 1.5 Flash + RF Model Active</p>
           </div>
-          <p className="text-[11px] text-slate-500">Gemini 1.5 Flash + SHAP Explainability Engine online</p>
-          <div className="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-400">
-            <span>Maverick Mini Hackathon</span>
-            <span className="text-emerald-400 font-mono flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Live
-            </span>
+
+          {/* Context */}
+          <div className="px-1">
+            <p className="text-[10px] text-slate-400 font-medium">Maverick Hackathon · TechNova Solutions</p>
+            <p className="text-[10px] text-slate-400">1,470 Workforce · Random Forest ML</p>
           </div>
         </div>
       </aside>
 
-      {/* Main Content Area */}
+      {/* ── Main Area ── */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Header */}
-        <header className="h-16 bg-slate-900/60 backdrop-blur-md border-b border-slate-800/80 px-6 flex items-center justify-between">
+        <header className="h-14 bg-white border-b border-slate-100 px-6 flex items-center justify-between shrink-0" style={{ zIndex: 10 }}>
           <div className="flex items-center gap-3">
-            <span className="px-2.5 py-1 bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 rounded-full text-xs font-semibold flex items-center gap-1.5">
-              <Zap className="w-3.5 h-3.5 text-amber-400" /> Capacity Stated: 50 Retention Talks / Cycle
-            </span>
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-indigo-100 bg-indigo-50">
+              <Zap className="w-3.5 h-3.5 text-amber-500" />
+              <span className="text-xs font-semibold text-indigo-700">Capacity: 50 Retention Talks / Cycle</span>
+            </div>
           </div>
-
-          <div className="flex items-center gap-4 text-xs">
-            <span className="text-slate-400">Client: <strong className="text-slate-200">TechNova Solutions</strong></span>
-            <span className="text-slate-400">Target Rate: <strong className="text-rose-400">16% Annual Attrition</strong></span>
-            <div className="h-4 w-px bg-slate-800"></div>
-            <span className="px-2.5 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-md font-mono">
-              Render + Vercel Stack
+          <div className="flex items-center gap-4">
+            <span className="text-xs text-slate-500">
+              Client: <strong className="text-slate-800">TechNova Solutions</strong>
             </span>
+            <span className="text-xs text-slate-500">
+              Target: <strong className="text-rose-600">↓ 16% Annual Attrition</strong>
+            </span>
+            <div className="h-4 w-px bg-slate-200" />
+            <button className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
+              <Bell className="w-4 h-4" />
+            </button>
+            <button className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
+              <HelpCircle className="w-4 h-4" />
+            </button>
           </div>
         </header>
 
-        {/* Dynamic Page Content */}
+        {/* Page Content */}
         <main className="flex-1 overflow-y-auto p-6">
           <Outlet />
         </main>
