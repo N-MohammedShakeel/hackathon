@@ -1,0 +1,1602 @@
+[
+  {
+    "rank": 1,
+    "employee_id": 622,
+    "attrition_probability": 0.9806,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Laboratory Technician",
+    "monthly_income": 2340,
+    "overtime": "Yes",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 2,
+    "employee_id": 1928,
+    "attrition_probability": 0.9736,
+    "risk_band": "High",
+    "department": "Sales",
+    "job_role": "Sales Representative",
+    "monthly_income": 1091,
+    "overtime": "No",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 3,
+    "employee_id": 1624,
+    "attrition_probability": 0.9666,
+    "risk_band": "High",
+    "department": "Sales",
+    "job_role": "Sales Representative",
+    "monthly_income": 1569,
+    "overtime": "Yes",
+    "years_at_company": 0,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 4,
+    "employee_id": 167,
+    "attrition_probability": 0.9614,
+    "risk_band": "High",
+    "department": "Sales",
+    "job_role": "Sales Representative",
+    "monthly_income": 1675,
+    "overtime": "Yes",
+    "years_at_company": 0,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 5,
+    "employee_id": 614,
+    "attrition_probability": 0.9596,
+    "risk_band": "High",
+    "department": "Sales",
+    "job_role": "Sales Representative",
+    "monthly_income": 1878,
+    "overtime": "Yes",
+    "years_at_company": 0,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 6,
+    "employee_id": 1427,
+    "attrition_probability": 0.9593,
+    "risk_band": "High",
+    "department": "Sales",
+    "job_role": "Sales Representative",
+    "monthly_income": 1359,
+    "overtime": "No",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 7,
+    "employee_id": 960,
+    "attrition_probability": 0.958,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Laboratory Technician",
+    "monthly_income": 2973,
+    "overtime": "No",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 8,
+    "employee_id": 55,
+    "attrition_probability": 0.9573,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Laboratory Technician",
+    "monthly_income": 2293,
+    "overtime": "No",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 9,
+    "employee_id": 1878,
+    "attrition_probability": 0.9553,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Research Scientist",
+    "monthly_income": 2472,
+    "overtime": "Yes",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 10,
+    "employee_id": 1494,
+    "attrition_probability": 0.9552,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Laboratory Technician",
+    "monthly_income": 3172,
+    "overtime": "Yes",
+    "years_at_company": 0,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 11,
+    "employee_id": 1868,
+    "attrition_probability": 0.9548,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Research Scientist",
+    "monthly_income": 2439,
+    "overtime": "Yes",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 12,
+    "employee_id": 952,
+    "attrition_probability": 0.9472,
+    "risk_band": "High",
+    "department": "Sales",
+    "job_role": "Sales Representative",
+    "monthly_income": 2413,
+    "overtime": "Yes",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 13,
+    "employee_id": 514,
+    "attrition_probability": 0.9466,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Research Scientist",
+    "monthly_income": 2285,
+    "overtime": "Yes",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 14,
+    "employee_id": 959,
+    "attrition_probability": 0.9462,
+    "risk_band": "High",
+    "department": "Sales",
+    "job_role": "Sales Representative",
+    "monthly_income": 2121,
+    "overtime": "Yes",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 15,
+    "employee_id": 566,
+    "attrition_probability": 0.9455,
+    "risk_band": "High",
+    "department": "Human Resources",
+    "job_role": "Human Resources",
+    "monthly_income": 2564,
+    "overtime": "No",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 16,
+    "employee_id": 1079,
+    "attrition_probability": 0.945,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Laboratory Technician",
+    "monthly_income": 1416,
+    "overtime": "No",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 17,
+    "employee_id": 137,
+    "attrition_probability": 0.9449,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Laboratory Technician",
+    "monthly_income": 2926,
+    "overtime": "Yes",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 18,
+    "employee_id": 243,
+    "attrition_probability": 0.9439,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Laboratory Technician",
+    "monthly_income": 1102,
+    "overtime": "No",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 19,
+    "employee_id": 2023,
+    "attrition_probability": 0.9425,
+    "risk_band": "High",
+    "department": "Sales",
+    "job_role": "Sales Representative",
+    "monthly_income": 1790,
+    "overtime": "No",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 20,
+    "employee_id": 911,
+    "attrition_probability": 0.94,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Laboratory Technician",
+    "monthly_income": 2795,
+    "overtime": "Yes",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 21,
+    "employee_id": 648,
+    "attrition_probability": 0.9377,
+    "risk_band": "High",
+    "department": "Sales",
+    "job_role": "Sales Representative",
+    "monthly_income": 2033,
+    "overtime": "No",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 22,
+    "employee_id": 1248,
+    "attrition_probability": 0.934,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Research Scientist",
+    "monthly_income": 1859,
+    "overtime": "Yes",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 23,
+    "employee_id": 1944,
+    "attrition_probability": 0.9337,
+    "risk_band": "High",
+    "department": "Human Resources",
+    "job_role": "Human Resources",
+    "monthly_income": 2863,
+    "overtime": "No",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 24,
+    "employee_id": 405,
+    "attrition_probability": 0.9335,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Laboratory Technician",
+    "monthly_income": 1420,
+    "overtime": "No",
+    "years_at_company": 0,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 25,
+    "employee_id": 816,
+    "attrition_probability": 0.931,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Laboratory Technician",
+    "monthly_income": 2319,
+    "overtime": "Yes",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 26,
+    "employee_id": 494,
+    "attrition_probability": 0.9268,
+    "risk_band": "High",
+    "department": "Sales",
+    "job_role": "Sales Representative",
+    "monthly_income": 2716,
+    "overtime": "No",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 27,
+    "employee_id": 1783,
+    "attrition_probability": 0.9261,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Laboratory Technician",
+    "monthly_income": 2398,
+    "overtime": "Yes",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 28,
+    "employee_id": 1876,
+    "attrition_probability": 0.9239,
+    "risk_band": "High",
+    "department": "Sales",
+    "job_role": "Sales Representative",
+    "monthly_income": 1081,
+    "overtime": "No",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 29,
+    "employee_id": 485,
+    "attrition_probability": 0.9234,
+    "risk_band": "High",
+    "department": "Sales",
+    "job_role": "Sales Representative",
+    "monthly_income": 2851,
+    "overtime": "Yes",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 30,
+    "employee_id": 1016,
+    "attrition_probability": 0.9231,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Research Scientist",
+    "monthly_income": 2600,
+    "overtime": "Yes",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 31,
+    "employee_id": 1107,
+    "attrition_probability": 0.9196,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Laboratory Technician",
+    "monthly_income": 2377,
+    "overtime": "No",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 32,
+    "employee_id": 1379,
+    "attrition_probability": 0.9182,
+    "risk_band": "High",
+    "department": "Sales",
+    "job_role": "Sales Representative",
+    "monthly_income": 2785,
+    "overtime": "No",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 33,
+    "employee_id": 1780,
+    "attrition_probability": 0.9173,
+    "risk_band": "High",
+    "department": "Sales",
+    "job_role": "Sales Representative",
+    "monthly_income": 2679,
+    "overtime": "No",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 34,
+    "employee_id": 1458,
+    "attrition_probability": 0.917,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Laboratory Technician",
+    "monthly_income": 3646,
+    "overtime": "Yes",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 35,
+    "employee_id": 235,
+    "attrition_probability": 0.915,
+    "risk_band": "High",
+    "department": "Sales",
+    "job_role": "Sales Representative",
+    "monthly_income": 2325,
+    "overtime": "No",
+    "years_at_company": 0,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 36,
+    "employee_id": 1844,
+    "attrition_probability": 0.9139,
+    "risk_band": "High",
+    "department": "Human Resources",
+    "job_role": "Human Resources",
+    "monthly_income": 2335,
+    "overtime": "Yes",
+    "years_at_company": 2,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 37,
+    "employee_id": 811,
+    "attrition_probability": 0.9114,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Laboratory Technician",
+    "monthly_income": 1601,
+    "overtime": "Yes",
+    "years_at_company": 0,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 38,
+    "employee_id": 1604,
+    "attrition_probability": 0.911,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Laboratory Technician",
+    "monthly_income": 2408,
+    "overtime": "Yes",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 39,
+    "employee_id": 587,
+    "attrition_probability": 0.9099,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Healthcare Representative",
+    "monthly_income": 9824,
+    "overtime": "No",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 40,
+    "employee_id": 1433,
+    "attrition_probability": 0.9079,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Research Scientist",
+    "monthly_income": 1261,
+    "overtime": "No",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 41,
+    "employee_id": 741,
+    "attrition_probability": 0.9073,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Research Scientist",
+    "monthly_income": 2216,
+    "overtime": "Yes",
+    "years_at_company": 7,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 42,
+    "employee_id": 1968,
+    "attrition_probability": 0.9061,
+    "risk_band": "High",
+    "department": "Sales",
+    "job_role": "Sales Executive",
+    "monthly_income": 10448,
+    "overtime": "Yes",
+    "years_at_company": 2,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 43,
+    "employee_id": 1758,
+    "attrition_probability": 0.904,
+    "risk_band": "High",
+    "department": "Sales",
+    "job_role": "Sales Executive",
+    "monthly_income": 8564,
+    "overtime": "Yes",
+    "years_at_company": 0,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 44,
+    "employee_id": 1504,
+    "attrition_probability": 0.9024,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Laboratory Technician",
+    "monthly_income": 2561,
+    "overtime": "No",
+    "years_at_company": 0,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 45,
+    "employee_id": 1273,
+    "attrition_probability": 0.9012,
+    "risk_band": "High",
+    "department": "Sales",
+    "job_role": "Sales Representative",
+    "monthly_income": 1118,
+    "overtime": "Yes",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 46,
+    "employee_id": 1714,
+    "attrition_probability": 0.8987,
+    "risk_band": "High",
+    "department": "Human Resources",
+    "job_role": "Human Resources",
+    "monthly_income": 1555,
+    "overtime": "No",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 47,
+    "employee_id": 1004,
+    "attrition_probability": 0.8985,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Research Scientist",
+    "monthly_income": 2132,
+    "overtime": "Yes",
+    "years_at_company": 5,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 48,
+    "employee_id": 1108,
+    "attrition_probability": 0.898,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Research Scientist",
+    "monthly_income": 2313,
+    "overtime": "Yes",
+    "years_at_company": 2,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 49,
+    "employee_id": 608,
+    "attrition_probability": 0.896,
+    "risk_band": "High",
+    "department": "Human Resources",
+    "job_role": "Human Resources",
+    "monthly_income": 2741,
+    "overtime": "Yes",
+    "years_at_company": 7,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "OverTime_Yes",
+        "label": "Works Overtime",
+        "direction": "Increase Risk",
+        "impact": 0.055
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  },
+  {
+    "rank": 50,
+    "employee_id": 1111,
+    "attrition_probability": 0.8955,
+    "risk_band": "High",
+    "department": "Research & Development",
+    "job_role": "Laboratory Technician",
+    "monthly_income": 2596,
+    "overtime": "No",
+    "years_at_company": 1,
+    "top_risk_factors": [
+      {
+        "feature": "MonthlyIncome",
+        "label": "Low Monthly Income",
+        "direction": "Increase Risk",
+        "impact": 0.0799
+      },
+      {
+        "feature": "Age",
+        "label": "Age",
+        "direction": "Increase Risk",
+        "impact": 0.0645
+      },
+      {
+        "feature": "DailyRate",
+        "label": "Dailyrate",
+        "direction": "Increase Risk",
+        "impact": 0.0524
+      }
+    ],
+    "retention_action": "Flag for next comp review cycle; benchmark against market rate"
+  }
+]
