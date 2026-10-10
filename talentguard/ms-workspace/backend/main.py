@@ -25,6 +25,15 @@ app.include_router(model_info.router)
 app.include_router(agent.router)
 app.include_router(chat.router)
 
+@app.get("/", tags=["Health"])
+@app.head("/", tags=["Health"])
+def root_health():
+    return {
+        "status": "healthy",
+        "service": "TalentGuard HR Intelligence API",
+        "version": "1.0.0"
+    }
+
 @app.get("/api/v1/health", tags=["Health"])
 def health_check():
     return {
