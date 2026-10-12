@@ -1,12 +1,4 @@
 # TalentGuard — Predictive HR Attrition & Agentic Retention Intelligence System
-### Hexaware Weekend Hackathon · Track P1 Solution
-
-[![Hackathon Track](https://img.shields.io/badge/Hackathon-Track%20P1%20TalentGuard-blue.svg)](https://hexaware.com)
-[![Submission Status](https://img.shields.io/badge/Status-Complete%20End--to--End-brightgreen.svg)](file:///c:/Users/prave/Downloads/hackathon-master/hackathon-master)
-[![Target Evaluator](https://img.shields.io/badge/Jury%20Review-2000127800%40hexaware.com-orange.svg)](mailto:2000127800@hexaware.com)
-[![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)](file:///c:/Users/prave/Downloads/hackathon-master/hackathon-master/LICENSE)
-
----
 
 ## Executive Summary
 
