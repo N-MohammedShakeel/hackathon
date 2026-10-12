@@ -500,7 +500,6 @@ talentguard/
 
 - **Event**: Hexaware Weekend Hackathon
 - **Problem Track**: Track P1 — TalentGuard HR Attrition Classification & Retention Intelligence
-- **Evaluator Submission Email**: [`2000127800@hexaware.com`](mailto:2000127800@hexaware.com)
 - **Delivered Solution**: End-to-end Machine Learning Pipeline, Leakage-Free Preprocessing, TreeSHAP Explainability, Top-50 Actionable Watchlist, Agentic AI Retention Coach with Human-in-the-Loop Governance, What-If Simulation Engine, FastAPI REST API, and React 18 Web Application.
 
 *Built with technical rigor for the Hexaware Weekend Hackathon.* 🚀
